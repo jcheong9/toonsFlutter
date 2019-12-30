@@ -69,12 +69,20 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text('Fetch Data Example'),
         ),
-        body: Center(
-          child: FutureBuilder<List<Post>>(
+        body: FutureBuilder<List<Post>>(
             future: post,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return Text(snapshot.data[0].occupation);
+                return ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+                      final item = snapshot.data[index];
+                      return  ListTile(
+                          title: Text(item.occupation),
+                      );
+                    },
+                );
+//                return Text(snapshot.data[0].occupation);
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }
@@ -82,7 +90,6 @@ class _MyAppState extends State<MyApp> {
               // By default, show a loading spinner.
               return CircularProgressIndicator();
             },
-          ),
         ),
       ),
     );
